@@ -32,16 +32,20 @@ DROP TABLE IF EXISTS `translators`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `translators` (
   `translator_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `status` enum('active','inactive','busy') COLLATE utf8mb4_unicode_ci DEFAULT 'active',
   `price` int(10) unsigned NOT NULL,
   `available_time_in_minutes` int(10) unsigned NOT NULL,
   `language_from` set('english','mandarin','hindi','spanish','french','arabic','bengali','russian','portuguese','german','italian','dutch','vietnamese','thai','japanese', 'korean') COLLATE utf8mb4_unicode_ci NOT NULL,
   `language_to` set('english','mandarin','hindi','spanish','french','arabic','bengali','russian','portuguese','german','italian','dutch','vietnamese','thai','japanese', 'korean') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `introduction` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`translator_id`)
+  PRIMARY KEY (`user_id`),
+  KEY `idx_translator_id` (`translator_id`),
+  CONSTRAINT `translators_ibfk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -62,6 +66,7 @@ CREATE TABLE `users` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  'card_info' varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,

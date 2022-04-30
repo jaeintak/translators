@@ -9,6 +9,8 @@ import com.translator.service.UserService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,19 +19,25 @@ class UserController(
     private val builder: UserResponseBuilder
 ) {
     @GetMapping("/user")
-    fun get(params: GetUserRequest): UserResponse {
-        return builder.build(service.get(params))
+    fun get(@RequestParam userId: Int): UserResponse? { // snake to camel
+        val user = requireNotNull(service.getById(userId)){
+            "user ($userId) is not found"
+        }
+        return builder.build(user)
     }
 
     @PostMapping("/user")
-    fun post(params: PostUserRequest): UserResponse {
-        val userId = service.post(params)
-        return builder.build(service.getById(userId))
+    fun post(@RequestBody request: PostUserRequest): UserResponse? {
+        val userId = service.post(request)
+        val user = requireNotNull(service.getById(userId)){
+            "user ($userId) is not found"
+        }
+        return builder.build(user)
     }
 
-    @PatchMapping("/user")
-    fun patch(params: PatchUserRequest): UserResponse {
-        val userId = service.patch(params)
-        return builder.build(service.getById(userId))
-    }
+//    @PatchMapping("/user") what is there to patch for users?
+//    fun patch(@RequestBody request: PatchUserRequest): UserResponse {
+//        val userId = service.patch(request)
+//        return builder.build(service.getById(userId))
+//    }
 }

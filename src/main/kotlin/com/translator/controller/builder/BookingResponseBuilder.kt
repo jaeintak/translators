@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component
 @Component
 class BookingResponseBuilder() {
 
-    fun build(booking:BookingsRecord?): BookingResponse {}
+    fun build(booking:BookingsRecord?) = BookingResponse()
 
 }

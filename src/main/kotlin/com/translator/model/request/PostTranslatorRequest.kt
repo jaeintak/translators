@@ -1,10 +1,15 @@
 package com.translator.model.request
 
 data class PostTranslatorRequest(
-    val name: String,
+    val userId: Int,
     val status: String?,
     val price: Int,
     val availableTimeInMinutes: Int,
-    val languageFrom: String,
-    val languageTo: String
+
+    @field:StringEnum
+
+    val languageFrom: List<String>,
+    val languageTo: List<String>,
+    val description: String?,
+    val introduction: String?
 )

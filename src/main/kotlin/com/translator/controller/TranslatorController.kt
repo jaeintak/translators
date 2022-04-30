@@ -9,6 +9,7 @@ import com.translator.service.TranslatorService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,16 +18,17 @@ class TranslatorController(
     private val builder: TranslatorResponseBuilder
 ) {
     @GetMapping("/translator")
-    fun get(params: GetTranslatorRequest): List<TranslatorResponse> {
+    fun get(params: GetTranslatorRequest): List<TranslatorResponse> { // some kind of validation is needed
         return builder.buildTranslatorsResponse(service.get(params))
     }
 
     @PostMapping("/translator")
-    fun post(params: PostTranslatorRequest): TranslatorResponse? {
-        val translatorId = service.post(params)
-        return service.getById(translatorId)?.let {
-            builder.buildTranslatorResponse(it)
+    fun post(@RequestBody request: PostTranslatorRequest): TranslatorResponse {  //camel to snake
+        val translatorId = service.post(request)
+        val translator = requireNotNull(service.getById(translatorId)){
+            "translator ($translatorId) is not found"
         }
+        return builder.buildTranslatorResponse(translator)
     }
 
     @PatchMapping("/translator")

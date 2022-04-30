@@ -11,7 +11,7 @@ class TranslatorResponseBuilder() {
         TranslatorResponse(
             translator = TranslatorResponse.Translator(
                 translatorId = translator.translatorId.toInt(),
-                name = translator.name,
+                name = "needs fix", //translator.name,
                 status = translator.status.toString(),
                 price = translator.price.toInt(),
                 availableTimeInMinutes = translator.availableTimeInMinutes.toInt(),
@@ -25,7 +25,7 @@ class TranslatorResponseBuilder() {
             TranslatorResponse(
                 translator = TranslatorResponse.Translator(
                     translatorId = translator.translatorId.toInt(),
-                    name = translator.name,
+                    name = "needs fix", //translator.name,
                     status = translator.status.toString(),
                     price = translator.price.toInt(),
                     availableTimeInMinutes = translator.availableTimeInMinutes.toInt(),

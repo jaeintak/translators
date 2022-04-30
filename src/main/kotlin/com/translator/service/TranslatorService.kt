@@ -22,12 +22,12 @@ class TranslatorService(
     }
 
     @Transactional
-    fun post(params: PostTranslatorRequest): Int{
-        return repository.create(params)
+    fun post(request: PostTranslatorRequest): Int{
+        return repository.create(request)
     }
 
     @Transactional
-    fun patch(params: PatchTranslatorRequest): Int{
-        return repository.update(params)
+    fun patch(request: PatchTranslatorRequest): Int{
+        return repository.update(request)
     }
 }

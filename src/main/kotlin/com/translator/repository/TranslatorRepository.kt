@@ -6,7 +6,9 @@ import com.translator.model.request.PatchTranslatorRequest
 import com.translator.model.request.PostTranslatorRequest
 import org.jooq.DSLContext
 import org.jooq.Field
+import org.jooq.JoinType
 import org.jooq.translator.Tables.TRANSLATORS
+import org.jooq.translator.Tables.USERS
 import org.jooq.translator.enums.TranslatorsStatus
 import org.jooq.translator.tables.records.TranslatorsRecord
 import org.jooq.types.UInteger
@@ -21,9 +23,8 @@ class TranslatorRepository(
         query.addSelect(includeFields())
         query.addConditions(TRANSLATORS.STATUS.eq(TranslatorsStatus.active))
 
-        if (params.name != null) {
-            query.addConditions(TRANSLATORS.NAME.eq(params.name))
-        }
+        query.addJoin(USERS, USERS.USER_ID.eq(TRANSLATORS.USER_ID))
+
         if (params.priceMax != null) {
             query.addConditions(TRANSLATORS.PRICE.lessOrEqual(UInteger.valueOf(params.priceMax)))
         }
@@ -38,63 +39,74 @@ class TranslatorRepository(
 
     fun findById(translatorId: Int): TranslatorsRecord? {
         val query = dsl.selectQuery(TRANSLATORS)
+        query.addJoin(USERS, USERS.USER_ID.eq(TRANSLATORS.USER_ID))
+
         query.addSelect(includeFields())
         query.addConditions(TRANSLATORS.TRANSLATOR_ID.eq(UInteger.valueOf(translatorId)))
         return query.fetchOneInto(TRANSLATORS)
     }
 
-    fun create(params: PostTranslatorRequest): Int {
+    fun create(request: PostTranslatorRequest): Int {
         dsl.insertInto(
             TRANSLATORS,
-            TRANSLATORS.NAME,
+            TRANSLATORS.USER_ID,
             TRANSLATORS.STATUS,
             TRANSLATORS.PRICE,
             TRANSLATORS.AVAILABLE_TIME_IN_MINUTES,
             TRANSLATORS.LANGUAGE_FROM,
-            TRANSLATORS.LANGUAGE_TO
+            TRANSLATORS.LANGUAGE_TO,
+            TRANSLATORS.DESCRIPTION,
+            TRANSLATORS.INTRODUCTION
         ).values(
-            params.name,
-            convertStatus(params.status),
-            UInteger.valueOf(params.price),
-            UInteger.valueOf(params.availableTimeInMinutes),
-            params.languageFrom,
-            params.languageTo
+            UInteger.valueOf(request.userId),
+            convertStatus(request.status),
+            UInteger.valueOf(request.price),
+            UInteger.valueOf(request.availableTimeInMinutes),
+            request.languageFrom.joinToString(","),
+            request.languageTo.joinToString(","),
+            request.description,
+            request.introduction
         ).execute()
         val translatorId = dsl.lastID()
         return translatorId.toInt()
     }
 
-    fun update(params: PatchTranslatorRequest): Int {
+    fun update(request: PatchTranslatorRequest): Int {
         val query = dsl.updateQuery(TRANSLATORS)
-        if(params.name != null){
-          query.addValue(TRANSLATORS.NAME, params.name)
+        if(request.status != null){
+            query.addValue(TRANSLATORS.STATUS, convertStatus(request.status))
         }
-        if(params.status != null){
-            query.addValue(TRANSLATORS.STATUS, convertStatus(params.status))
+        if(request.price != null){
+            query.addValue(TRANSLATORS.PRICE, UInteger.valueOf(request.price))
         }
-        if(params.price != null){
-            query.addValue(TRANSLATORS.PRICE, UInteger.valueOf(params.price))
+        if(request.availableTimeInMinutes != null){
+            query.addValue(TRANSLATORS.AVAILABLE_TIME_IN_MINUTES, UInteger.valueOf(request.availableTimeInMinutes))
         }
-        if(params.availableTimeInMinutes != null){
-            query.addValue(TRANSLATORS.AVAILABLE_TIME_IN_MINUTES, UInteger.valueOf(params.availableTimeInMinutes))
+        if(request.languageFrom != null){
+            query.addValue(TRANSLATORS.LANGUAGE_FROM, request.languageFrom)
         }
-        if(params.languageFrom != null){
-            query.addValue(TRANSLATORS.LANGUAGE_FROM, params.languageFrom)
+        if(request.languageTo != null){
+            query.addValue(TRANSLATORS.LANGUAGE_TO, request.languageTo)
         }
-        if(params.languageTo != null){
-            query.addValue(TRANSLATORS.LANGUAGE_TO, params.languageTo)
+        if(request.description != null){
+            query.addValue(TRANSLATORS.DESCRIPTION, request.languageTo)
+        }
+        if(request.introduction != null){
+            query.addValue(TRANSLATORS.INTRODUCTION, request.languageTo)
         }
         return query.execute()
     }
 
     private fun includeFields(): Set<Field<*>> = setOf(
         TRANSLATORS.TRANSLATOR_ID,
-        TRANSLATORS.NAME,
+        USERS.NAME,
         TRANSLATORS.STATUS,
         TRANSLATORS.PRICE,
         TRANSLATORS.AVAILABLE_TIME_IN_MINUTES,
         TRANSLATORS.LANGUAGE_FROM,
-        TRANSLATORS.LANGUAGE_TO
+        TRANSLATORS.LANGUAGE_TO,
+        TRANSLATORS.DESCRIPTION,
+        TRANSLATORS.INTRODUCTION
     )
 
     private fun convertStatus(status: String?) =
