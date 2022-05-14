@@ -1,0 +1,65 @@
+spring:
+  profiles.active: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/translator?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    hikari:
+      pool-name: jpa-hikari-pool
+      maximum-pool-size: 5
+      jdbc-url: jdbc:mysql://localhost:3306/translator?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      data-source-properties:
+        rewriteBatchedStatements: true
+security:
+  oauth2.client:
+    registration:
+      google:
+        clientId: '433941435873-n536jhqrqg2gj6pe6nm4n3luktql1u2m.apps.googleusercontent.com'
+        clientSecret: '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'
+        scope:
+          - email
+          - profile
+      facebook:
+        clientId: '{페이스북 client-id}'
+        clientSecret: '{페이스북 client-secret}'
+        scope:
+          - email
+          - public_profile
+      naver:
+        clientId: '{네이버 client-id}'
+        clientSecret: '{네이버 client-secret}'
+        clientAuthenticationMethod: post
+        authorizationGrantType: authorization_code
+        redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+        scope:
+          - nickname
+          - email
+          - profile_image
+        clientName: Naver
+      kakao:
+        clientId: '{카카오 client-id}'
+        clientSecret: '{카카오 client-secret}'
+        clientAuthenticationMethod: post
+        authorizationGrantType: authorization_code
+        redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+        scope:
+          - profile_nickname
+          - profile_image
+          - account_email
+        clientName: Kakao
+    # Provider 설정
+    provider:
+      naver:
+        authorizationUri: https://nid.naver.com/oauth2.0/authorize
+        tokenUri: https://nid.naver.com/oauth2.0/token
+        userInfoUri: https://openapi.naver.com/v1/nid/me
+        userNameAttribute: response
+      kakao:
+        authorizationUri: https://kauth.kakao.com/oauth/authorize
+        tokenUri: https://kauth.kakao.com/oauth/token
+        userInfoUri: https://kapi.kakao.com/v2/user/me
+        userNameAttribute: id
