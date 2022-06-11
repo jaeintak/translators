@@ -29,8 +29,10 @@ dependencies {
     testRuntimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(kotlin("test"))
-    testImplementation("org.testcontainers:mysql")
+    //testImplementation("org.testcontainers:mysql")
     jooqGenerator("mysql:mysql-connector-java")
+    implementation("org.springframework.security.oauth:spring-security-oauth2:2.3.8.RELEASE")
+    implementation("org.springframework.security:spring-security-jwt:1.1.1.RELEASE")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
@@ -54,10 +56,10 @@ tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-dependencyLocking {
-	lockAllConfigurations()
-	lockMode.set(LockMode.STRICT)
-}
+//dependencyLocking {
+//	lockAllConfigurations()
+//	lockMode.set(LockMode.STRICT)
+//}
 
 jooq {
     version.set("3.14.8")

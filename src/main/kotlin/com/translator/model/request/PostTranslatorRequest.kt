@@ -6,7 +6,7 @@ data class PostTranslatorRequest(
     val price: Int,
     val availableTimeInMinutes: Int,
 
-    @field:StringEnum
+    //@field:StringEnum
 
     val languageFrom: List<String>,
     val languageTo: List<String>,

@@ -1,4 +1,4 @@
-package com.translator.controller
+package com.translator.api
 
 import com.translator.controller.builder.UserResponseBuilder
 import com.translator.model.request.GetUserRequest
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class UserController(
+class RestUserController(
     private val service: UserService,
     private val builder: UserResponseBuilder
 ) {
-    @GetMapping("/user")
+    @GetMapping("/api/user")
     fun get(@RequestParam userId: Int): UserResponse? { // snake to camel
         val user = requireNotNull(service.getById(userId)){
             "user ($userId) is not found"
@@ -26,7 +26,7 @@ class UserController(
         return builder.build(user)
     }
 
-    @PostMapping("/user")
+    @PostMapping("/api/user")
     fun post(@RequestBody request: PostUserRequest): UserResponse? {
         val userId = service.post(request)
         val user = requireNotNull(service.getById(userId)){

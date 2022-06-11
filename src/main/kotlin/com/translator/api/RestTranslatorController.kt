@@ -1,4 +1,4 @@
-package com.translator.controller
+package com.translator.api
 
 import com.translator.controller.builder.TranslatorResponseBuilder
 import com.translator.model.request.GetTranslatorRequest
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class TranslatorController(
+class RestTranslatorController(
     private val service: TranslatorService,
     private val builder: TranslatorResponseBuilder
 ) {
-    @GetMapping("/translator")
+    @GetMapping("/api/translator")
     fun get(params: GetTranslatorRequest): List<TranslatorResponse> { // some kind of validation is needed
         return builder.buildTranslatorsResponse(service.get(params))
     }
 
-    @PostMapping("/translator")
+    @PostMapping("/api/translator")
     fun post(@RequestBody request: PostTranslatorRequest): TranslatorResponse {  //camel to snake
         val translatorId = service.post(request)
         val translator = requireNotNull(service.getById(translatorId)){
@@ -31,7 +31,7 @@ class TranslatorController(
         return builder.buildTranslatorResponse(translator)
     }
 
-    @PatchMapping("/translator")
+    @PatchMapping("/api/translator")
     fun patch(params: PatchTranslatorRequest): TranslatorResponse? {
         service.patch(params)
         return service.getById(params.translatorId)?.let {

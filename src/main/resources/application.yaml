@@ -14,52 +14,56 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       data-source-properties:
         rewriteBatchedStatements: true
-security:
-  oauth2.client:
-    registration:
-      google:
-        clientId: '433941435873-n536jhqrqg2gj6pe6nm4n3luktql1u2m.apps.googleusercontent.com'
-        clientSecret: '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'
-        scope:
-          - email
-          - profile
-      facebook:
-        clientId: '{페이스북 client-id}'
-        clientSecret: '{페이스북 client-secret}'
-        scope:
-          - email
-          - public_profile
-      naver:
-        clientId: '{네이버 client-id}'
-        clientSecret: '{네이버 client-secret}'
-        clientAuthenticationMethod: post
-        authorizationGrantType: authorization_code
-        redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-        scope:
-          - nickname
-          - email
-          - profile_image
-        clientName: Naver
-      kakao:
-        clientId: '{카카오 client-id}'
-        clientSecret: '{카카오 client-secret}'
-        clientAuthenticationMethod: post
-        authorizationGrantType: authorization_code
-        redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-        scope:
-          - profile_nickname
-          - profile_image
-          - account_email
-        clientName: Kakao
-    # Provider 설정
-    provider:
-      naver:
-        authorizationUri: https://nid.naver.com/oauth2.0/authorize
-        tokenUri: https://nid.naver.com/oauth2.0/token
-        userInfoUri: https://openapi.naver.com/v1/nid/me
-        userNameAttribute: response
-      kakao:
-        authorizationUri: https://kauth.kakao.com/oauth/authorize
-        tokenUri: https://kauth.kakao.com/oauth/token
-        userInfoUri: https://kapi.kakao.com/v2/user/me
-        userNameAttribute: id
+  security:
+    oauth2.client:
+      registration:
+        google:
+          clientId: '433941435873-n536jhqrqg2gj6pe6nm4n3luktql1u2m.apps.googleusercontent.com'
+          clientSecret: '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'
+          scope:
+            - email
+            - profile
+        facebook:
+          clientId: '412368273797822'
+          clientSecret: '3a58cd9c700366765d7a6eabf6d660ce'
+          scope:
+            - email
+            - public_profile
+        naver:
+          clientId: 'QZO2EegCXdSUQljzXXxo'
+          clientSecret: 'Ib11imAjpK'
+          clientAuthenticationMethod: post
+          authorizationGrantType: authorization_code
+          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          scope:
+            - nickname
+            - email
+            - profile_image
+          clientName: Naver
+        kakao:
+          clientId: 'b3390efb3bda1ad86b2c27a2bd42138a'
+          clientSecret: 'AGI6uFKWFb6V2rXFvxrLBLRB4AIHRu64'
+          clientAuthenticationMethod: post
+          authorizationGrantType: authorization_code
+          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          scope:
+            - profile_nickname
+            - profile_image
+            - account_email
+          clientName: Kakao
+      # Provider 설정
+      provider:
+        naver:
+          authorizationUri: https://nid.naver.com/oauth2.0/authorize
+          tokenUri: https://nid.naver.com/oauth2.0/token
+          userInfoUri: https://openapi.naver.com/v1/nid/me
+          userNameAttribute: response
+        kakao:
+          authorizationUri: https://kauth.kakao.com/oauth/authorize
+          tokenUri: https://kauth.kakao.com/oauth/token
+          userInfoUri: https://kapi.kakao.com/v2/user/me
+          userNameAttribute: id
+    basic:
+      enabled: false
+example:
+  jwt-secret: jwt-secret

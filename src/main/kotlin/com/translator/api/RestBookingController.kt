@@ -1,4 +1,4 @@
-package com.translator.controller
+package com.translator.api
 
 import com.translator.controller.builder.BookingResponseBuilder
 import com.translator.model.request.PatchBookingRequest
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class BookingController(
+class RestBookingController(
     private val service: BookingService,
     private val builder: BookingResponseBuilder
 ) {
 
     // when user makes booking, this api should be called
-    @PostMapping("/booking")
+    @PostMapping("/api/booking")
     fun post(params: PostBookingRequest): BookingResponse {
         val bookingId = service.post(params)
         return builder.build(service.getById(bookingId))
@@ -24,7 +24,7 @@ class BookingController(
 
     // when translator accepts booking and when the call is over,
     // this api should be called
-    @PatchMapping("/booking")
+    @PatchMapping("/api/booking")
     fun patch(params: PatchBookingRequest): BookingResponse {
         val bookingId = service.patch(params)
         return builder.build(service.getById(bookingId))

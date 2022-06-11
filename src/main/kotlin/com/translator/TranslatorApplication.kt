@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class TranslatorApplication
 
 fun main(args: Array<String>) {
-	runApplication<TranslatorApplication>(*args)
+    runApplication<TranslatorApplication>(*args)
 }
